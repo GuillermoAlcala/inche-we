@@ -12,7 +12,7 @@ struct CreateTask: View {
     @State private var category : categories = .office
     @State private var openSheetCategory : Bool = false
     @State private var openSheetCalendar : Bool = false
-    @Query(sort:\Product.date, order:.reverse) private var products : [Product]
+    @Query(sort:\TaskItem.createDate, order:.reverse) private var personal : [TaskItem]
     @Query(sort:\TaskItem.createDate, order:.reverse) private var offices : [TaskItem]
 
 //    @State private var name : String = ""
@@ -114,7 +114,7 @@ struct CreateTask: View {
 //                                           systemImage: "brain.head.profile",
 //                                           description: Text("Create any record"))
 //                }
-         if offices.isEmpty && category == .personal{
+         if personal.isEmpty && category == .personal{
                     ContentUnavailableView("No data found",
                                            systemImage: "hand.thumbsup", description: Text("Create any record"))
                 }

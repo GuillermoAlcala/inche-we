@@ -11,7 +11,7 @@ import SwiftData
 @Model
 final class TaskItem{
     var id: UUID = UUID()
-    var category : TaskCategories = TaskCategories.Grocery
+    var category : TaskCategories = TaskCategories.Office
     var title : String = ""
     var createDate = Date()
     var dueDate  = Date()
@@ -19,7 +19,7 @@ final class TaskItem{
     var notify : Bool = false
     
     init(
-    category: TaskCategories = .Grocery,
+    category: TaskCategories = .Office,
     title : String = "",
     createDate : Date = .now,
     dueDate: Date = Date(),
@@ -38,7 +38,6 @@ final class TaskItem{
 }
 
 enum TaskCategories: String, Codable,CaseIterable,Identifiable{
-    case Grocery
     case Office
     case Personal
     
