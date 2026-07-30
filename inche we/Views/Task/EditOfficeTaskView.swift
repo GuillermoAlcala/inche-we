@@ -29,8 +29,11 @@ struct EditOfficeTaskView: View {
     var body: some View {
         NavigationStack {
             Form {
-                TextField("Add the task", text: $title)
-                DatePicker("Choose the date", selection: $createDate, displayedComponents: .date)
+                TextField("Rename your task", text: $title)
+                DatePicker("update creation date", selection: $createDate, in: Date()..., displayedComponents: .date)
+                DatePicker("Update due date", selection: $dueDate,in: Date()...,displayedComponents: [.date,.hourAndMinute])
+                Toggle("Notification", isOn: $notified)
+
             }
             .navigationTitle("Edit task")
             .navigationBarTitleDisplayMode(.inline)
@@ -42,10 +45,12 @@ struct EditOfficeTaskView: View {
                     .tint(.pink)
                 }
             }
+            .navigationTitle("Edit your task")
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 
-    private func saveChanges() {
+    private func saveChanges() { // para editar la information
         task.title = title
         task.createDate = createDate
         task.dueDate = dueDate

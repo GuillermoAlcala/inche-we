@@ -8,12 +8,18 @@
 import SwiftUI
 import SwiftData
 struct CreateTask: View {
+    
+    // MARK: - States Zone -> PersonalView
+
+    
     @State private var calendar : Date = .now
     @State private var category : categories = .office
     @State private var openSheetCategory : Bool = false
     @State private var openSheetCalendar : Bool = false
     @Query(sort:\TaskItem.createDate, order:.reverse) private var personal : [TaskItem]
     @Query(sort:\TaskItem.createDate, order:.reverse) private var offices : [TaskItem]
+    
+    @Environment(\.modelContext) private var modelcontext
 
 //    @State private var name : String = ""
 //    @State private var pendigStask : String = ""
@@ -36,11 +42,10 @@ struct CreateTask: View {
             VStack(alignment:.center){
                 PickerCategories
                 Spacer()
-              //  List{
-                        AllCategories
+                    AllCategories
+            
                 Spacer()
                  CustomContent
-              //  }
                 .listRowSeparator(.hidden)
                 .listRowBackground(Color.clear)
                 .scrollContentBackground(.hidden)
@@ -60,6 +65,7 @@ struct CreateTask: View {
                         openSheetCalendar.toggle()
                     }
                 }
+                
             }
             .sheet(isPresented: $openSheetCalendar){
                 Calendar
@@ -71,7 +77,7 @@ struct CreateTask: View {
                 if category == .office{
                     OfficeView(mode: .create)
                 }else if category == .personal{
-                    PersonalView()
+                    PersonalView(mode: .create)
                 }
                 //MARK: -  falta agregar la categoria personal
             }
@@ -88,6 +94,7 @@ struct CreateTask: View {
             .tint(.orange)
     }
     
+    
     @ViewBuilder
     private var PickerCategories: some View{
         Picker("Categories", selection: $category){
@@ -99,14 +106,15 @@ struct CreateTask: View {
     // MARK: - ALL CATEGORIES SEGMENTED
     @ViewBuilder
     private var AllCategories: some View{
-        switch category {
-        case .office:
-            OfficeView(mode: .view)
-        case .personal:
-            PersonalView()
-        }
-    }
+                switch category {
+                case .office:
+                    OfficeView(mode: .view)
+                case .personal:
+                    PersonalView(mode: .view)
+                }
     
+        
+    }
     @ViewBuilder
     private var CustomContent: some View{
 //                if offices.isEmpty && category == .office{
@@ -168,6 +176,6 @@ struct CreateTask: View {
     
 }
 
-#Preview {
-    CreateTask()
-}
+//#Preview {
+//    CreateTask()
+//}
