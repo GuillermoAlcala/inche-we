@@ -15,7 +15,8 @@ struct PersonalView: View {
     let mode : CatalogMode
     @State private var title : String =  ""
     @State private var createDate : Date = .now
-    @State private var dueDate: Date = Calendar.current.date(byAdding: .hour, value: 1, to: .now) ?? .now
+    // esta parte: (byAdding: .minute (puede ser hora, día) , value: 30(este es el valor, es decir: 30min, 30 hrs, 30, días) to: .now ( apartir de este momento)
+    @State private var dueDate: Date = Calendar.current.date(byAdding: .minute, value: 30, to: .now) ?? .now
     @State private var isCompleted : Bool = false
     @State private var nofitied: Bool = false
     @State private var isPresentedAlert : Bool = false
@@ -112,26 +113,30 @@ struct PersonalView: View {
                                 .font(.subheadline)
                                 .foregroundStyle(isOverdue(item: item) ? .red : .secondary)
                             
-//
-//                            Text("\(item.dueDate, style: .relative)")
-//                                .font(.subheadline)
-//                                .foregroundStyle(isOverdue(item: item) ? .red : .secondary)
-//
                             //revisar, si la fecha fin es > a hoy, mostrar en tiempo
-                            if item.dueDate > Date(){
-                                Text("In time \(item.dueDate, style: .relative)")
-                                    .font(.subheadline)
-                                   // .foregroundStyle(isOverdue(item: item) ? .red : .secondary)
-                                    .foregroundStyle(.secondary)
-
-                                
-                            }else{
-                                Text("Time over \(item.dueDate, style: .relative)")
-                                    .font(.subheadline)
-                                //    .foregroundStyle(isOverdue(item: item) ? .red : .secondary)
-                                    .foregroundStyle(.red)
-
+                            TimelineView(.everyMinute){ context in
+                                Group{
+                                    if item.isCompleted{
+                                        Text("Completed")
+                                            .foregroundStyle(.green)
+                                        
+                                    }else if item.dueDate > context.date{
+                                        Text("In time \(item.dueDate, style: .relative)")
+                                            .font(.subheadline)
+                                        // .foregroundStyle(isOverdue(item: item) ? .red : .secondary)
+                                            .foregroundStyle(.secondary)
+                                    }
+                                    
+                                    else{
+                                        Text("Time over \(item.dueDate, style: .relative)")
+                                            .font(.subheadline)
+                                        //    .foregroundStyle(isOverdue(item: item) ? .red : .secondary)
+                                            .foregroundStyle(.red)
+                                        
+                                    }
+                                }//Group
                             }
+                            
                         }//Vstack
                     }//Hstack
                     .contextMenu{
